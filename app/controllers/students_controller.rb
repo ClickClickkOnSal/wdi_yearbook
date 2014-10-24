@@ -1,7 +1,8 @@
 class StudentsController < ApplicationController
 
   def index
-    @student = Student.all
+    @students = Student.all
+
   end
 
   def new
@@ -9,7 +10,7 @@ class StudentsController < ApplicationController
   end
 
   def create
-    @student = Student.new(params[:student])
+    @student = Student.new(students_params)
     if @student.save 
       respond_to do |format|
         format.html { redirect_to @student }
@@ -24,7 +25,8 @@ class StudentsController < ApplicationController
   end
 
   def show
-    @student = Student.find(params[:student])
+    
+    @student = Student.find(params[:id])
 
     respond_to do  |format|
       format.html
@@ -34,7 +36,7 @@ class StudentsController < ApplicationController
 
   def update
     @student = Student.find(params[:id])
-    if @student.update_attributes(params[:student]) 
+    if @student.update_attributes(students_params) 
       respond_to do |format|
         format.html { redirect_to @student }
         format.json { render json: @student }
@@ -62,5 +64,9 @@ class StudentsController < ApplicationController
       end  
     end 
   end
+  private
 
+  def students_params
+    params.require(:student).permit(:name, :superlative)
+  end
 end
